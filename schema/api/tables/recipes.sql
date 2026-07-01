@@ -3,8 +3,8 @@ CREATE TABLE api.recipes (
 	user_id              UUID             NOT NULL,
 	title                VARCHAR(255)     NOT NULL,
 	content              TEXT             NOT NULL,
-	thumbnail_image_hash TEXT             NOT NULL,
 	difficulty           difficulty_level NOT NULL,
+	thumbnail_image_hash TEXT,
 
 	FOREIGN KEY (user_id)
 		REFERENCES users(user_id)
