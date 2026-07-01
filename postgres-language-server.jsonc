@@ -1,0 +1,24 @@
+{
+  "$schema": "https://pg-language-server.com/latest/schema.json",
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true
+    }
+  },
+  "typecheck": {
+    "enabled": true
+  },
+  "plpgsqlCheck": {
+    "enabled": true
+  },
+  "format": {
+    "enabled": false,
+    "lineWidth": 80,
+    "indentSize": 4,
+    "indentStyle": "tabs",
+    "keywordCase": "upper",
+    "constantCase": "upper",
+    "typeCase": "upper"
+  }
+}
