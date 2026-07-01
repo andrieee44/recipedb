@@ -4,5 +4,7 @@ AS $$
     FROM images
     WHERE hash = image_hash;
 $$
-    LANGUAGE sql
+    LANGUAGE SQL
     STABLE;
+
+GRANT EXECUTE ON FUNCTION api.get_image TO anon, authenticated;

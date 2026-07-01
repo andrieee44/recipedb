@@ -1,9 +1,10 @@
 CREATE TABLE api.recipes (
-	recipe_id  UUID             PRIMARY KEY DEFAULT gen_random_uuid(),
-	user_id    UUID             NOT NULL,
-	title      VARCHAR(255)     NOT NULL,
-	content    TEXT             NOT NULL,
-	difficulty difficulty_level NOT NULL,
+	recipe_id            UUID             PRIMARY KEY DEFAULT gen_random_uuid(),
+	user_id              UUID             NOT NULL,
+	title                VARCHAR(255)     NOT NULL,
+	content              TEXT             NOT NULL,
+	thumbnail_image_hash TEXT             NOT NULL,
+	difficulty           difficulty_level NOT NULL,
 
 	FOREIGN KEY (user_id)
 		REFERENCES users(user_id)

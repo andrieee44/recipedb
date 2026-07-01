@@ -3,3 +3,5 @@ inputs:
     url: github:cachix/devenv-nixpkgs/rolling
   pgschema:
     url: github:pgplex/pgschema
+
+reload: false

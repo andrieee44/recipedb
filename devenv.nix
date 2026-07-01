@@ -1,29 +1,29 @@
 {
   config,
-  pkgs,
-  lib,
   inputs,
+  lib,
+  pkgs,
   ...
 }:
 {
   languages.nix.enable = true;
 
   env = lib.mkDefault {
-    PGHOST = "";
-    PGUSER = "";
-    PGPORT = "";
     PGDATABASE = "";
+    PGHOST = "";
     PGPASSWORD = "";
-    PGSCHEMA_PLAN_HOST = "";
-    PGSCHEMA_PLAN_PORT = "";
+    PGPORT = "";
     PGSCHEMA_PLAN_DB = "";
-    PGSCHEMA_PLAN_USER = "";
+    PGSCHEMA_PLAN_HOST = "";
     PGSCHEMA_PLAN_PASSWORD = "";
+    PGSCHEMA_PLAN_PORT = "";
     PGSCHEMA_PLAN_SSLMODE = "";
-    SSH_USER = "";
+    PGSCHEMA_PLAN_USER = "";
+    PGUSER = "";
+    SSHPASS = "";
     SSH_HOST = "";
     SSH_PORT = "";
-    SSHPASS = "";
+    SSH_USER = "";
   };
 
   packages = with pkgs; [

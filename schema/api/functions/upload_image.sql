@@ -11,4 +11,7 @@ AS $$
     END;
 $$
     LANGUAGE PLPGSQL
-    SECURITY DEFINER;
+    SECURITY DEFINER
+    SET search_path = public;
+
+GRANT EXECUTE ON FUNCTION api.upload_image TO authenticated;
