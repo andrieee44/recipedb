@@ -35,6 +35,7 @@
     postgres-language-server
     postgresql
     sshpass
+    tbls
     vscode-json-languageserver
     yaml-language-server
   ];
@@ -52,7 +53,7 @@
   };
 
   scripts = {
-    "pgmigrate".exec = ''
+    pgmigrate.exec = ''
       set -x
 
       for schema in public auth api; do
@@ -63,6 +64,13 @@
       psql -d recipedb -v ON_ERROR_STOP=1 --echo-all <<'EOF'
         NOTIFY pgrst;
       EOF
+    '';
+
+    documentation.exec = ''
+      set -x
+
+      tbls lint
+      tbls doc -f
     '';
   };
 }

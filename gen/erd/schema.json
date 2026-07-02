@@ -1,0 +1,1116 @@
+{
+  "name": "recipedb",
+  "tables": [
+    {
+      "name": "public.users",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "user_id",
+          "type": "uuid",
+          "nullable": false,
+          "default": "gen_random_uuid()"
+        },
+        {
+          "name": "email",
+          "type": "varchar(320)",
+          "nullable": false
+        },
+        {
+          "name": "first_name",
+          "type": "varchar(255)",
+          "nullable": false
+        },
+        {
+          "name": "last_name",
+          "type": "varchar(255)",
+          "nullable": false
+        },
+        {
+          "name": "password_hash",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "middle_name",
+          "type": "varchar(255)",
+          "nullable": true
+        },
+        {
+          "name": "is_admin",
+          "type": "boolean",
+          "nullable": false,
+          "default": "false"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "users_pkey",
+          "def": "CREATE UNIQUE INDEX users_pkey ON public.users USING btree (user_id)",
+          "table": "public.users",
+          "columns": [
+            "user_id"
+          ]
+        },
+        {
+          "name": "users_email_key",
+          "def": "CREATE UNIQUE INDEX users_email_key ON public.users USING btree (email)",
+          "table": "public.users",
+          "columns": [
+            "email"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "users_pkey",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (user_id)",
+          "table": "public.users",
+          "referenced_table": "",
+          "columns": [
+            "user_id"
+          ]
+        },
+        {
+          "name": "users_email_key",
+          "type": "UNIQUE",
+          "def": "UNIQUE (email)",
+          "table": "public.users",
+          "referenced_table": "",
+          "columns": [
+            "email"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "api.recipes",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "recipe_id",
+          "type": "uuid",
+          "nullable": false,
+          "default": "gen_random_uuid()"
+        },
+        {
+          "name": "user_id",
+          "type": "uuid",
+          "nullable": false
+        },
+        {
+          "name": "title",
+          "type": "varchar(255)",
+          "nullable": false
+        },
+        {
+          "name": "content",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "difficulty",
+          "type": "api.difficulty_level",
+          "nullable": false
+        },
+        {
+          "name": "thumbnail_image_hash",
+          "type": "text",
+          "nullable": true
+        }
+      ],
+      "indexes": [
+        {
+          "name": "recipes_pkey",
+          "def": "CREATE UNIQUE INDEX recipes_pkey ON api.recipes USING btree (recipe_id)",
+          "table": "api.recipes",
+          "columns": [
+            "recipe_id"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "recipes_user_id_fkey",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE",
+          "table": "api.recipes",
+          "referenced_table": "public.users",
+          "columns": [
+            "user_id"
+          ],
+          "referenced_columns": [
+            "user_id"
+          ]
+        },
+        {
+          "name": "recipes_pkey",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (recipe_id)",
+          "table": "api.recipes",
+          "referenced_table": "",
+          "columns": [
+            "recipe_id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "api.recipes_comments",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "comment_id",
+          "type": "uuid",
+          "nullable": false,
+          "default": "gen_random_uuid()"
+        },
+        {
+          "name": "recipe_id",
+          "type": "uuid",
+          "nullable": false
+        },
+        {
+          "name": "user_id",
+          "type": "uuid",
+          "nullable": false
+        },
+        {
+          "name": "parent_comment_id",
+          "type": "uuid",
+          "nullable": true
+        },
+        {
+          "name": "content",
+          "type": "text",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "recipes_comments_pkey",
+          "def": "CREATE UNIQUE INDEX recipes_comments_pkey ON api.recipes_comments USING btree (comment_id)",
+          "table": "api.recipes_comments",
+          "columns": [
+            "comment_id"
+          ]
+        },
+        {
+          "name": "recipes_comments_comment_id_recipe_id_key",
+          "def": "CREATE UNIQUE INDEX recipes_comments_comment_id_recipe_id_key ON api.recipes_comments USING btree (comment_id, recipe_id)",
+          "table": "api.recipes_comments",
+          "columns": [
+            "comment_id",
+            "recipe_id"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "recipes_comments_user_id_fkey",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE",
+          "table": "api.recipes_comments",
+          "referenced_table": "public.users",
+          "columns": [
+            "user_id"
+          ],
+          "referenced_columns": [
+            "user_id"
+          ]
+        },
+        {
+          "name": "recipes_comments_recipe_id_fkey",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (recipe_id) REFERENCES api.recipes(recipe_id) ON DELETE CASCADE",
+          "table": "api.recipes_comments",
+          "referenced_table": "api.recipes",
+          "columns": [
+            "recipe_id"
+          ],
+          "referenced_columns": [
+            "recipe_id"
+          ]
+        },
+        {
+          "name": "recipes_comments_pkey",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (comment_id)",
+          "table": "api.recipes_comments",
+          "referenced_table": "",
+          "columns": [
+            "comment_id"
+          ]
+        },
+        {
+          "name": "recipes_comments_comment_id_recipe_id_key",
+          "type": "UNIQUE",
+          "def": "UNIQUE (comment_id, recipe_id)",
+          "table": "api.recipes_comments",
+          "referenced_table": "",
+          "columns": [
+            "comment_id",
+            "recipe_id"
+          ]
+        },
+        {
+          "name": "recipes_comments_parent_comment_id_recipe_id_fkey",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (parent_comment_id, recipe_id) REFERENCES api.recipes_comments(comment_id, recipe_id) ON DELETE SET NULL",
+          "table": "api.recipes_comments",
+          "referenced_table": "api.recipes_comments",
+          "columns": [
+            "parent_comment_id",
+            "recipe_id"
+          ],
+          "referenced_columns": [
+            "comment_id",
+            "recipe_id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "api.recipes_comments_votes",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "user_id",
+          "type": "uuid",
+          "nullable": false
+        },
+        {
+          "name": "comment_id",
+          "type": "uuid",
+          "nullable": false
+        },
+        {
+          "name": "upvote",
+          "type": "boolean",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "recipes_comments_votes_pkey",
+          "def": "CREATE UNIQUE INDEX recipes_comments_votes_pkey ON api.recipes_comments_votes USING btree (user_id, comment_id)",
+          "table": "api.recipes_comments_votes",
+          "columns": [
+            "user_id",
+            "comment_id"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "recipes_comments_votes_user_id_fkey",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE",
+          "table": "api.recipes_comments_votes",
+          "referenced_table": "public.users",
+          "columns": [
+            "user_id"
+          ],
+          "referenced_columns": [
+            "user_id"
+          ]
+        },
+        {
+          "name": "recipes_comments_votes_comment_id_fkey",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (comment_id) REFERENCES api.recipes_comments(comment_id) ON DELETE CASCADE",
+          "table": "api.recipes_comments_votes",
+          "referenced_table": "api.recipes_comments",
+          "columns": [
+            "comment_id"
+          ],
+          "referenced_columns": [
+            "comment_id"
+          ]
+        },
+        {
+          "name": "recipes_comments_votes_pkey",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (user_id, comment_id)",
+          "table": "api.recipes_comments_votes",
+          "referenced_table": "",
+          "columns": [
+            "user_id",
+            "comment_id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "api.tags",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "tag_id",
+          "type": "uuid",
+          "nullable": false,
+          "default": "gen_random_uuid()"
+        },
+        {
+          "name": "name",
+          "type": "varchar(255)",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "tags_pkey",
+          "def": "CREATE UNIQUE INDEX tags_pkey ON api.tags USING btree (tag_id)",
+          "table": "api.tags",
+          "columns": [
+            "tag_id"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "tags_pkey",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (tag_id)",
+          "table": "api.tags",
+          "referenced_table": "",
+          "columns": [
+            "tag_id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "api.recipes_tags",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "recipe_id",
+          "type": "uuid",
+          "nullable": false
+        },
+        {
+          "name": "tag_id",
+          "type": "uuid",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "recipes_tags_pkey",
+          "def": "CREATE UNIQUE INDEX recipes_tags_pkey ON api.recipes_tags USING btree (recipe_id, tag_id)",
+          "table": "api.recipes_tags",
+          "columns": [
+            "recipe_id",
+            "tag_id"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "recipes_tags_recipe_id_fkey",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (recipe_id) REFERENCES api.recipes(recipe_id) ON DELETE CASCADE",
+          "table": "api.recipes_tags",
+          "referenced_table": "api.recipes",
+          "columns": [
+            "recipe_id"
+          ],
+          "referenced_columns": [
+            "recipe_id"
+          ]
+        },
+        {
+          "name": "recipes_tags_tag_id_fkey",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (tag_id) REFERENCES api.tags(tag_id) ON DELETE CASCADE",
+          "table": "api.recipes_tags",
+          "referenced_table": "api.tags",
+          "columns": [
+            "tag_id"
+          ],
+          "referenced_columns": [
+            "tag_id"
+          ]
+        },
+        {
+          "name": "recipes_tags_pkey",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (recipe_id, tag_id)",
+          "table": "api.recipes_tags",
+          "referenced_table": "",
+          "columns": [
+            "recipe_id",
+            "tag_id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "api.users_recipe_votes",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "user_id",
+          "type": "uuid",
+          "nullable": false
+        },
+        {
+          "name": "recipe_id",
+          "type": "uuid",
+          "nullable": false
+        },
+        {
+          "name": "upvote",
+          "type": "boolean",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "users_recipe_votes_pkey",
+          "def": "CREATE UNIQUE INDEX users_recipe_votes_pkey ON api.users_recipe_votes USING btree (user_id, recipe_id)",
+          "table": "api.users_recipe_votes",
+          "columns": [
+            "user_id",
+            "recipe_id"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "users_recipe_votes_user_id_fkey",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE",
+          "table": "api.users_recipe_votes",
+          "referenced_table": "public.users",
+          "columns": [
+            "user_id"
+          ],
+          "referenced_columns": [
+            "user_id"
+          ]
+        },
+        {
+          "name": "users_recipe_votes_recipe_id_fkey",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (recipe_id) REFERENCES api.recipes(recipe_id) ON DELETE CASCADE",
+          "table": "api.users_recipe_votes",
+          "referenced_table": "api.recipes",
+          "columns": [
+            "recipe_id"
+          ],
+          "referenced_columns": [
+            "recipe_id"
+          ]
+        },
+        {
+          "name": "users_recipe_votes_pkey",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (user_id, recipe_id)",
+          "table": "api.users_recipe_votes",
+          "referenced_table": "",
+          "columns": [
+            "user_id",
+            "recipe_id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "api.favorite_recipes",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "user_id",
+          "type": "uuid",
+          "nullable": false
+        },
+        {
+          "name": "recipe_id",
+          "type": "uuid",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "favorite_recipes_pkey",
+          "def": "CREATE UNIQUE INDEX favorite_recipes_pkey ON api.favorite_recipes USING btree (user_id, recipe_id)",
+          "table": "api.favorite_recipes",
+          "columns": [
+            "user_id",
+            "recipe_id"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "favorite_recipes_user_id_fkey",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE",
+          "table": "api.favorite_recipes",
+          "referenced_table": "public.users",
+          "columns": [
+            "user_id"
+          ],
+          "referenced_columns": [
+            "user_id"
+          ]
+        },
+        {
+          "name": "favorite_recipes_recipe_id_fkey",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (recipe_id) REFERENCES api.recipes(recipe_id) ON DELETE CASCADE",
+          "table": "api.favorite_recipes",
+          "referenced_table": "api.recipes",
+          "columns": [
+            "recipe_id"
+          ],
+          "referenced_columns": [
+            "recipe_id"
+          ]
+        },
+        {
+          "name": "favorite_recipes_pkey",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (user_id, recipe_id)",
+          "table": "api.favorite_recipes",
+          "referenced_table": "",
+          "columns": [
+            "user_id",
+            "recipe_id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "public.images",
+      "type": "BASE TABLE",
+      "columns": [
+        {
+          "name": "hash",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "data",
+          "type": "bytea",
+          "nullable": false
+        }
+      ],
+      "indexes": [
+        {
+          "name": "images_pkey",
+          "def": "CREATE UNIQUE INDEX images_pkey ON public.images USING btree (hash)",
+          "table": "public.images",
+          "columns": [
+            "hash"
+          ]
+        }
+      ],
+      "constraints": [
+        {
+          "name": "images_pkey",
+          "type": "PRIMARY KEY",
+          "def": "PRIMARY KEY (hash)",
+          "table": "public.images",
+          "referenced_table": "",
+          "columns": [
+            "hash"
+          ]
+        }
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "table": "api.recipes",
+      "columns": [
+        "user_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "public.users",
+      "parent_columns": [
+        "user_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE"
+    },
+    {
+      "table": "api.recipes_comments",
+      "columns": [
+        "user_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "public.users",
+      "parent_columns": [
+        "user_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE"
+    },
+    {
+      "table": "api.recipes_comments",
+      "columns": [
+        "recipe_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "api.recipes",
+      "parent_columns": [
+        "recipe_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (recipe_id) REFERENCES api.recipes(recipe_id) ON DELETE CASCADE"
+    },
+    {
+      "table": "api.recipes_comments",
+      "columns": [
+        "parent_comment_id",
+        "recipe_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "api.recipes_comments",
+      "parent_columns": [
+        "comment_id",
+        "recipe_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (parent_comment_id, recipe_id) REFERENCES api.recipes_comments(comment_id, recipe_id) ON DELETE SET NULL"
+    },
+    {
+      "table": "api.recipes_comments_votes",
+      "columns": [
+        "user_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "public.users",
+      "parent_columns": [
+        "user_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE"
+    },
+    {
+      "table": "api.recipes_comments_votes",
+      "columns": [
+        "comment_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "api.recipes_comments",
+      "parent_columns": [
+        "comment_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (comment_id) REFERENCES api.recipes_comments(comment_id) ON DELETE CASCADE"
+    },
+    {
+      "table": "api.recipes_tags",
+      "columns": [
+        "recipe_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "api.recipes",
+      "parent_columns": [
+        "recipe_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (recipe_id) REFERENCES api.recipes(recipe_id) ON DELETE CASCADE"
+    },
+    {
+      "table": "api.recipes_tags",
+      "columns": [
+        "tag_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "api.tags",
+      "parent_columns": [
+        "tag_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (tag_id) REFERENCES api.tags(tag_id) ON DELETE CASCADE"
+    },
+    {
+      "table": "api.users_recipe_votes",
+      "columns": [
+        "user_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "public.users",
+      "parent_columns": [
+        "user_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE"
+    },
+    {
+      "table": "api.users_recipe_votes",
+      "columns": [
+        "recipe_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "api.recipes",
+      "parent_columns": [
+        "recipe_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (recipe_id) REFERENCES api.recipes(recipe_id) ON DELETE CASCADE"
+    },
+    {
+      "table": "api.favorite_recipes",
+      "columns": [
+        "user_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "public.users",
+      "parent_columns": [
+        "user_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE"
+    },
+    {
+      "table": "api.favorite_recipes",
+      "columns": [
+        "recipe_id"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "api.recipes",
+      "parent_columns": [
+        "recipe_id"
+      ],
+      "parent_cardinality": "exactly_one",
+      "def": "FOREIGN KEY (recipe_id) REFERENCES api.recipes(recipe_id) ON DELETE CASCADE"
+    }
+  ],
+  "functions": [
+    {
+      "name": "api.login",
+      "return_type": "json",
+      "arguments": "email text, password text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "api.signup",
+      "return_type": "void",
+      "arguments": "email text, password text, first_name text, last_name text, middle_name text DEFAULT NULL::text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "auth.is_admin",
+      "return_type": "bool",
+      "arguments": "",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "auth.user_id",
+      "return_type": "uuid",
+      "arguments": "",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "auth.owns_recipe",
+      "return_type": "bool",
+      "arguments": "target_recipe_id uuid",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.digest",
+      "return_type": "bytea",
+      "arguments": "text, text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.digest",
+      "return_type": "bytea",
+      "arguments": "bytea, text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.hmac",
+      "return_type": "bytea",
+      "arguments": "text, text, text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.hmac",
+      "return_type": "bytea",
+      "arguments": "bytea, bytea, text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.crypt",
+      "return_type": "text",
+      "arguments": "text, text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.gen_salt",
+      "return_type": "text",
+      "arguments": "text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.gen_salt",
+      "return_type": "text",
+      "arguments": "text, integer",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.encrypt",
+      "return_type": "bytea",
+      "arguments": "bytea, bytea, text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.decrypt",
+      "return_type": "bytea",
+      "arguments": "bytea, bytea, text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.encrypt_iv",
+      "return_type": "bytea",
+      "arguments": "bytea, bytea, bytea, text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.decrypt_iv",
+      "return_type": "bytea",
+      "arguments": "bytea, bytea, bytea, text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.gen_random_bytes",
+      "return_type": "bytea",
+      "arguments": "integer",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.gen_random_uuid",
+      "return_type": "uuid",
+      "arguments": "",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.pgp_sym_encrypt",
+      "return_type": "bytea",
+      "arguments": "text, text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.pgp_sym_encrypt_bytea",
+      "return_type": "bytea",
+      "arguments": "bytea, text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.pgp_sym_encrypt",
+      "return_type": "bytea",
+      "arguments": "text, text, text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.pgp_sym_encrypt_bytea",
+      "return_type": "bytea",
+      "arguments": "bytea, text, text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.pgp_sym_decrypt",
+      "return_type": "text",
+      "arguments": "bytea, text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.pgp_sym_decrypt_bytea",
+      "return_type": "bytea",
+      "arguments": "bytea, text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.pgp_sym_decrypt",
+      "return_type": "text",
+      "arguments": "bytea, text, text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.pgp_sym_decrypt_bytea",
+      "return_type": "bytea",
+      "arguments": "bytea, text, text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.pgp_pub_encrypt",
+      "return_type": "bytea",
+      "arguments": "text, bytea",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.pgp_pub_encrypt_bytea",
+      "return_type": "bytea",
+      "arguments": "bytea, bytea",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.pgp_pub_encrypt",
+      "return_type": "bytea",
+      "arguments": "text, bytea, text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.pgp_pub_encrypt_bytea",
+      "return_type": "bytea",
+      "arguments": "bytea, bytea, text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.pgp_pub_decrypt",
+      "return_type": "text",
+      "arguments": "bytea, bytea",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.pgp_pub_decrypt_bytea",
+      "return_type": "bytea",
+      "arguments": "bytea, bytea",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.pgp_pub_decrypt",
+      "return_type": "text",
+      "arguments": "bytea, bytea, text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.pgp_pub_decrypt_bytea",
+      "return_type": "bytea",
+      "arguments": "bytea, bytea, text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.pgp_pub_decrypt",
+      "return_type": "text",
+      "arguments": "bytea, bytea, text, text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.pgp_pub_decrypt_bytea",
+      "return_type": "bytea",
+      "arguments": "bytea, bytea, text, text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.pgp_key_id",
+      "return_type": "text",
+      "arguments": "bytea",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.armor",
+      "return_type": "text",
+      "arguments": "bytea",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.armor",
+      "return_type": "text",
+      "arguments": "bytea, text[], text[]",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.dearmor",
+      "return_type": "bytea",
+      "arguments": "text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "public.pgp_armor_headers",
+      "return_type": "record",
+      "arguments": "text, OUT key text, OUT value text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "api.change_password",
+      "return_type": "void",
+      "arguments": "new_password text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "api.change_self",
+      "return_type": "void",
+      "arguments": "new_first_name character varying DEFAULT NULL::character varying, new_last_name character varying DEFAULT NULL::character varying, new_middle_name character varying DEFAULT NULL::character varying",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "api.self_info",
+      "return_type": "record",
+      "arguments": "",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "api.user_info",
+      "return_type": "record",
+      "arguments": "target_id uuid",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "api.get_image",
+      "return_type": "application/octet-stream",
+      "arguments": "image_hash text",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "api.upload_image",
+      "return_type": "text",
+      "arguments": "image_data bytea",
+      "type": "FUNCTION"
+    }
+  ],
+  "enums": [
+    {
+      "name": "api.difficulty_level",
+      "values": [
+        "Advanced",
+        "Beginner",
+        "Easy",
+        "Expert",
+        "Intermediate"
+      ]
+    },
+    {
+      "name": "pgschema_tmp_20260622_091016_b94231b8.difficulty_level",
+      "values": [
+        "Advanced",
+        "Beginner",
+        "Easy",
+        "Expert",
+        "Intermediate"
+      ]
+    },
+    {
+      "name": "pgschema_tmp_20260622_183335_363ae4df.difficulty_level",
+      "values": [
+        "Advanced",
+        "Beginner",
+        "Easy",
+        "Expert",
+        "Intermediate"
+      ]
+    }
+  ],
+  "driver": {
+    "name": "postgres",
+    "database_version": "PostgreSQL 17.10 on x86_64-pc-linux-gnu, compiled by clang version 21.1.8, 64-bit",
+    "meta": {
+      "current_schema": "public",
+      "search_paths": [
+        "recipedb",
+        "public"
+      ],
+      "dict": {
+        "Functions": "Stored procedures and functions"
+      }
+    }
+  }
+}

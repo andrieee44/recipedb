@@ -1,0 +1,9 @@
+dsn: "postgres://${PGUSER}:${PGPASSWORD}@${PGHOST}:${PGPORT}/${PGDATABASE}?sslmode=disable"
+docPath: "gen/erd"
+name: "recipedb"
+er:
+  hideDef: true
+include:
+  - "api.*"
+  - "public.*"
+  - "auth.*"
