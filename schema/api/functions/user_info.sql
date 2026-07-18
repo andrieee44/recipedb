@@ -3,7 +3,6 @@ CREATE FUNCTION api.user_info(target_id UUID) RETURNS TABLE (
     last_name            VARCHAR,
     middle_name          VARCHAR,
     profile_picture_hash TEXT
-
 ) AS $$
     SELECT first_name, last_name, middle_name, profile_picture_hash
     FROM users

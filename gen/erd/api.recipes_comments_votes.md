@@ -22,6 +22,12 @@
 | ---- | ---------- |
 | recipes_comments_votes_pkey | CREATE UNIQUE INDEX recipes_comments_votes_pkey ON api.recipes_comments_votes USING btree (user_id, comment_id) |
 
+## Triggers
+
+| Name | Definition |
+| ---- | ---------- |
+| trg_notify_recipe_comment_vote | CREATE TRIGGER trg_notify_recipe_comment_vote AFTER INSERT OR UPDATE ON api.recipes_comments_votes FOR EACH ROW EXECUTE FUNCTION api.notify_recipe_comment_vote() |
+
 ## Relations
 
 ![er](api.recipes_comments_votes.svg)

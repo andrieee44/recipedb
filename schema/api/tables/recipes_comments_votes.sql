@@ -29,5 +29,5 @@ CREATE POLICY self_all_recipes_comments_votes ON api.recipes_comments_votes
 
 GRANT SELECT ON api.recipes_comments_votes TO anon;
 
-GRANT SELECT, INSERT, UPDATE, DELETE ON api.recipes_comments_votes
-	TO authenticated;
+GRANT SELECT, INSERT, UPDATE (upvote), DELETE
+	ON api.recipes_comments_votes TO authenticated;

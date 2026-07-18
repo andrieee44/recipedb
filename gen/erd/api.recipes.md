@@ -4,17 +4,24 @@
 
 | Name | Type | Default | Nullable | Children | Parents | Comment |
 | ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| recipe_id | uuid | gen_random_uuid() | false | [api.recipes_comments](api.recipes_comments.md) [api.recipes_tags](api.recipes_tags.md) [api.users_recipe_votes](api.users_recipe_votes.md) [api.favorite_recipes](api.favorite_recipes.md) |  |  |
+| recipe_id | uuid | gen_random_uuid() | false | [api.favorite_recipes](api.favorite_recipes.md) [api.recipes_comments](api.recipes_comments.md) [api.notifications](api.notifications.md) [api.recipes_ingredients](api.recipes_ingredients.md) [api.recipes_steps](api.recipes_steps.md) [api.recipes_votes](api.recipes_votes.md) [api.recipes_tags](api.recipes_tags.md) |  |  |
 | user_id | uuid |  | false |  | [public.users](public.users.md) |  |
 | title | varchar(255) |  | false |  |  |  |
-| content | text |  | false |  |  |  |
+| description | text |  | false |  |  |  |
 | difficulty | api.difficulty_level |  | false |  |  |  |
+| serving | integer |  | false |  |  |  |
+| prep_mins | integer |  | false |  |  |  |
+| cook_mins | integer |  | false |  |  |  |
+| created_at | timestamp with time zone | now() | false |  |  |  |
 | thumbnail_image_hash | text |  | true |  |  |  |
 
 ## Constraints
 
 | Name | Type | Definition |
 | ---- | ---- | ---------- |
+| recipes_cook_mins_check | CHECK | CHECK ((cook_mins >= 1)) |
+| recipes_prep_mins_check | CHECK | CHECK ((prep_mins >= 1)) |
+| recipes_serving_check | CHECK | CHECK ((serving >= 1)) |
 | recipes_user_id_fkey | FOREIGN KEY | FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE |
 | recipes_pkey | PRIMARY KEY | PRIMARY KEY (recipe_id) |
 
@@ -23,6 +30,13 @@
 | Name | Definition |
 | ---- | ---------- |
 | recipes_pkey | CREATE UNIQUE INDEX recipes_pkey ON api.recipes USING btree (recipe_id) |
+| recipes_created_at_idx | CREATE INDEX recipes_created_at_idx ON api.recipes USING btree (created_at DESC) |
+
+## Triggers
+
+| Name | Definition |
+| ---- | ---------- |
+| trg_notify_insert_recipe | CREATE TRIGGER trg_notify_insert_recipe AFTER INSERT ON api.recipes FOR EACH ROW EXECUTE FUNCTION api.notify_insert_recipe() |
 
 ## Relations
 

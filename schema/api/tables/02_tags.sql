@@ -17,4 +17,4 @@ CREATE POLICY admin_all_tags ON api.tags
 	WITH CHECK (auth.is_admin());
 
 GRANT SELECT ON api.tags TO anon;
-GRANT SELECT, INSERT, UPDATE, DELETE ON api.tags TO authenticated;
+GRANT SELECT, INSERT (name), UPDATE (name), DELETE ON api.tags TO authenticated;

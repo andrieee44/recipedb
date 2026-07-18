@@ -4,13 +4,14 @@
 
 | Name | Type | Default | Nullable | Children | Parents | Comment |
 | ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| user_id | uuid | gen_random_uuid() | false | [api.recipes](api.recipes.md) [api.recipes_comments](api.recipes_comments.md) [api.recipes_comments_votes](api.recipes_comments_votes.md) [api.users_recipe_votes](api.users_recipe_votes.md) [api.favorite_recipes](api.favorite_recipes.md) |  |  |
+| user_id | uuid | gen_random_uuid() | false | [api.recipes](api.recipes.md) [api.favorite_recipes](api.favorite_recipes.md) [api.recipes_comments](api.recipes_comments.md) [api.notifications](api.notifications.md) [api.recipes_comments_votes](api.recipes_comments_votes.md) [api.recipes_votes](api.recipes_votes.md) [api.users_follows](api.users_follows.md) |  |  |
 | email | varchar(320) |  | false |  |  |  |
 | first_name | varchar(255) |  | false |  |  |  |
 | last_name | varchar(255) |  | false |  |  |  |
 | password_hash | text |  | false |  |  |  |
 | middle_name | varchar(255) |  | true |  |  |  |
 | is_admin | boolean | false | false |  |  |  |
+| profile_picture_hash | text |  | true |  |  |  |
 
 ## Constraints
 

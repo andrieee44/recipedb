@@ -4,22 +4,24 @@
 
 | Name | Columns | Comment | Type |
 | ---- | ------- | ------- | ---- |
-| [public.users](public.users.md) | 7 |  | BASE TABLE |
-| [api.recipes](api.recipes.md) | 6 |  | BASE TABLE |
-| [api.recipes_comments](api.recipes_comments.md) | 5 |  | BASE TABLE |
+| [public.users](public.users.md) | 8 |  | BASE TABLE |
+| [public.images](public.images.md) | 2 |  | BASE TABLE |
+| [api.recipes](api.recipes.md) | 10 |  | BASE TABLE |
+| [api.favorite_recipes](api.favorite_recipes.md) | 2 |  | BASE TABLE |
+| [api.recipes_comments](api.recipes_comments.md) | 6 |  | BASE TABLE |
+| [api.notifications](api.notifications.md) | 7 |  | BASE TABLE |
 | [api.recipes_comments_votes](api.recipes_comments_votes.md) | 3 |  | BASE TABLE |
+| [api.recipes_ingredients](api.recipes_ingredients.md) | 5 |  | BASE TABLE |
+| [api.recipes_steps](api.recipes_steps.md) | 4 |  | BASE TABLE |
+| [api.recipes_votes](api.recipes_votes.md) | 3 |  | BASE TABLE |
 | [api.tags](api.tags.md) | 2 |  | BASE TABLE |
 | [api.recipes_tags](api.recipes_tags.md) | 2 |  | BASE TABLE |
-| [api.users_recipe_votes](api.users_recipe_votes.md) | 3 |  | BASE TABLE |
-| [api.favorite_recipes](api.favorite_recipes.md) | 2 |  | BASE TABLE |
-| [public.images](public.images.md) | 2 |  | BASE TABLE |
+| [api.users_follows](api.users_follows.md) | 2 |  | BASE TABLE |
 
 ## Stored procedures and functions
 
 | Name | ReturnType | Arguments | Type |
 | ---- | ------- | ------- | ---- |
-| api.login | json | email text, password text | FUNCTION |
-| api.signup | void | email text, password text, first_name text, last_name text, middle_name text DEFAULT NULL::text | FUNCTION |
 | auth.is_admin | bool |  | FUNCTION |
 | auth.user_id | uuid |  | FUNCTION |
 | auth.owns_recipe | bool | target_recipe_id uuid | FUNCTION |
@@ -60,19 +62,25 @@
 | public.dearmor | bytea | text | FUNCTION |
 | public.pgp_armor_headers | record | text, OUT key text, OUT value text | FUNCTION |
 | api.change_password | void | new_password text | FUNCTION |
-| api.change_self | void | new_first_name character varying DEFAULT NULL::character varying, new_last_name character varying DEFAULT NULL::character varying, new_middle_name character varying DEFAULT NULL::character varying | FUNCTION |
-| api.self_info | record |  | FUNCTION |
-| api.user_info | record | target_id uuid | FUNCTION |
 | api.get_image | application/octet-stream | image_hash text | FUNCTION |
+| api.login | json | email text, password text | FUNCTION |
+| api.notify_insert_recipe | trigger |  | FUNCTION |
+| api.notify_insert_recipe_comment | trigger |  | FUNCTION |
+| api.notify_insert_user_follow | trigger |  | FUNCTION |
+| api.notify_recipe_comment_vote | trigger |  | FUNCTION |
+| api.notify_recipe_vote | trigger |  | FUNCTION |
+| api.signup | void | email text, password text, first_name text, last_name text, middle_name text DEFAULT NULL::text | FUNCTION |
+| api.update_user | void | new_first_name character varying DEFAULT NULL::character varying, new_last_name character varying DEFAULT NULL::character varying, new_middle_name character varying DEFAULT NULL::character varying, new_profile_picture_hash text DEFAULT NULL::text | FUNCTION |
 | api.upload_image | text | image_data bytea | FUNCTION |
+| api.user_info | record | target_id uuid | FUNCTION |
+| api.user_private_info | record |  | FUNCTION |
 
 ## Enums
 
 | Name | Values |
 | ---- | ------- |
 | api.difficulty_level | Advanced, Beginner, Easy, Expert, Intermediate |
-| pgschema_tmp_20260622_091016_b94231b8.difficulty_level | Advanced, Beginner, Easy, Expert, Intermediate |
-| pgschema_tmp_20260622_183335_363ae4df.difficulty_level | Advanced, Beginner, Easy, Expert, Intermediate |
+| api.notification_type | follower_new, following_recipe_new, recipe_comment_new, recipe_comment_reply, recipe_comment_voted, recipe_new, recipe_voted |
 
 ## Relations
 

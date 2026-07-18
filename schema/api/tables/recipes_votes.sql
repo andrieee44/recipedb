@@ -1,4 +1,4 @@
-CREATE TABLE api.users_recipe_votes (
+CREATE TABLE api.recipes_votes (
 	user_id   UUID    NOT NULL,
 	recipe_id UUID    NOT NULL,
 	upvote    BOOLEAN NOT NULL,
@@ -14,20 +14,20 @@ CREATE TABLE api.users_recipe_votes (
 		ON DELETE CASCADE
 );
 
-ALTER TABLE api.users_recipe_votes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE api.recipes_votes ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY all_select_users_recipe_votes ON api.users_recipe_votes
+CREATE POLICY all_select_recipes_votes ON api.recipes_votes
 	FOR SELECT
 	TO anon, authenticated
 	USING (TRUE);
 
-CREATE POLICY self_all_users_recipe_votes ON api.users_recipe_votes
+CREATE POLICY self_all_recipes_votes ON api.recipes_votes
 	FOR ALL
 	TO authenticated
 	USING (user_id = auth.user_id())
 	WITH CHECK (user_id = auth.user_id());
 
-GRANT SELECT ON api.users_recipe_votes TO anon;
+GRANT SELECT ON api.recipes_votes TO anon;
 
-GRANT SELECT, INSERT, UPDATE, DELETE ON api.users_recipe_votes
-	TO authenticated;
+GRANT SELECT, INSERT, UPDATE (upvote), DELETE
+	ON api.recipes_votes TO authenticated;

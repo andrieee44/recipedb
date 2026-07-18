@@ -27,4 +27,4 @@ CREATE POLICY owner_all_recipes_tags ON api.recipes_tags
 	WITH CHECK (auth.owns_recipe(recipe_id) OR auth.is_admin());
 
 GRANT SELECT ON api.recipes_tags TO anon;
-GRANT SELECT, INSERT, UPDATE, DELETE ON api.recipes_tags TO authenticated;
+GRANT SELECT, INSERT, DELETE ON api.recipes_tags TO authenticated;

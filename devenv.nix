@@ -53,8 +53,8 @@
   };
 
   scripts = {
-    pgmigrate.exec = ''
-      set -x
+    dbmigrate.exec = ''
+      set -eux
 
       for schema in public auth api; do
         pgschema apply --schema $schema \
@@ -64,10 +64,6 @@
       psql -d recipedb -v ON_ERROR_STOP=1 --echo-all <<'EOF'
         NOTIFY pgrst;
       EOF
-    '';
-
-    documentation.exec = ''
-      set -x
 
       tbls lint
       tbls doc -f

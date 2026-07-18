@@ -4,14 +4,6 @@
 -- GRANT USAGE ON SCHEMA api TO anon, authenticated;
 -- ALTER DATABASE recipedb SET app.jwt_secret = 'your-long-random-secret';
 
-CREATE TYPE difficulty_level AS ENUM (
-	'Beginner',
-	'Easy',
-	'Intermediate',
-	'Advanced',
-	'Expert'
-);
-
 -- WARNING VIBE CODED LOGIN, SIGNUP WILL FIX WITH DEDICATED MICROSERVICE
 -- PLAN TO USE SELF HOSTED SUPABASE AUTH OR SOMETHING ELSE
 -- TODO SETUP A SECOND REVERSE PROXY TO DEAL WITH PORT STARVATION
@@ -101,11 +93,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp;
 
-\i tables/recipes.sql
-\i tables/tags.sql
-\i tables/favorite_recipes.sql
-\i tables/recipes_comments.sql
-\i tables/recipes_comments_votes.sql
-\i tables/recipes_tags.sql
-\i tables/users_recipe_votes.sql
+\i types/
+\i tables/
 \i functions/
+\i triggers/

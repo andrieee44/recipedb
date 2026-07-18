@@ -21,4 +21,4 @@ CREATE POLICY self_all_favorite_recipes ON api.favorite_recipes
 	USING (user_id = auth.user_id())
 	WITH CHECK (user_id = auth.user_id());
 
-GRANT SELECT, INSERT, UPDATE, DELETE ON api.favorite_recipes TO authenticated;
+GRANT SELECT, INSERT, DELETE ON api.favorite_recipes TO authenticated;

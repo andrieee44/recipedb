@@ -4,11 +4,12 @@
 
 | Name | Type | Default | Nullable | Children | Parents | Comment |
 | ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| comment_id | uuid | gen_random_uuid() | false | [api.recipes_comments](api.recipes_comments.md) [api.recipes_comments_votes](api.recipes_comments_votes.md) |  |  |
+| comment_id | uuid | gen_random_uuid() | false | [api.recipes_comments](api.recipes_comments.md) [api.notifications](api.notifications.md) [api.recipes_comments_votes](api.recipes_comments_votes.md) |  |  |
 | recipe_id | uuid |  | false | [api.recipes_comments](api.recipes_comments.md) | [api.recipes](api.recipes.md) [api.recipes_comments](api.recipes_comments.md) |  |
 | user_id | uuid |  | false |  | [public.users](public.users.md) |  |
-| parent_comment_id | uuid |  | true |  | [api.recipes_comments](api.recipes_comments.md) |  |
 | content | text |  | false |  |  |  |
+| created_at | timestamp with time zone | now() | false |  |  |  |
+| parent_comment_id | uuid |  | true |  | [api.recipes_comments](api.recipes_comments.md) |  |
 
 ## Constraints
 
@@ -26,6 +27,14 @@
 | ---- | ---------- |
 | recipes_comments_pkey | CREATE UNIQUE INDEX recipes_comments_pkey ON api.recipes_comments USING btree (comment_id) |
 | recipes_comments_comment_id_recipe_id_key | CREATE UNIQUE INDEX recipes_comments_comment_id_recipe_id_key ON api.recipes_comments USING btree (comment_id, recipe_id) |
+| recipes_comments_parent_comment_id_idx | CREATE INDEX recipes_comments_parent_comment_id_idx ON api.recipes_comments USING btree (parent_comment_id) |
+| recipes_comments_recipe_id_created_at_idx | CREATE INDEX recipes_comments_recipe_id_created_at_idx ON api.recipes_comments USING btree (recipe_id, created_at DESC) |
+
+## Triggers
+
+| Name | Definition |
+| ---- | ---------- |
+| trg_notify_insert_recipe_comment | CREATE TRIGGER trg_notify_insert_recipe_comment AFTER INSERT ON api.recipes_comments FOR EACH ROW EXECUTE FUNCTION api.notify_insert_recipe_comment() |
 
 ## Relations
 

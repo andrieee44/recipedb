@@ -5,5 +5,5 @@ er:
   hideDef: true
 include:
   - "api.*"
-  - "public.*"
   - "auth.*"
+  - "public.*"
