@@ -12,7 +12,10 @@ CREATE TABLE api.recipes (
 
 	FOREIGN KEY (user_id)
 		REFERENCES users(user_id)
-		ON DELETE CASCADE
+		ON DELETE CASCADE,
+
+	FOREIGN KEY (thumbnail_image_hash)
+		REFERENCES images(hash)
 );
 
 ALTER TABLE api.recipes ENABLE ROW LEVEL SECURITY;

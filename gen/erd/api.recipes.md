@@ -13,7 +13,7 @@
 | prep_mins | integer |  | false |  |  |  |
 | cook_mins | integer |  | false |  |  |  |
 | created_at | timestamp with time zone | now() | false |  |  |  |
-| thumbnail_image_hash | text |  | true |  |  |  |
+| thumbnail_image_hash | text |  | true |  | [public.images](public.images.md) |  |
 
 ## Constraints
 
@@ -23,6 +23,7 @@
 | recipes_prep_mins_check | CHECK | CHECK ((prep_mins >= 1)) |
 | recipes_serving_check | CHECK | CHECK ((serving >= 1)) |
 | recipes_user_id_fkey | FOREIGN KEY | FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE |
+| recipes_thumbnail_image_hash_fkey | FOREIGN KEY | FOREIGN KEY (thumbnail_image_hash) REFERENCES images(hash) |
 | recipes_pkey | PRIMARY KEY | PRIMARY KEY (recipe_id) |
 
 ## Indexes

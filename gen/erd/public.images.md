@@ -4,7 +4,7 @@
 
 | Name | Type | Default | Nullable | Children | Parents | Comment |
 | ---- | ---- | ------- | -------- | -------- | ------- | ------- |
-| hash | text |  | false |  |  |  |
+| hash | text |  | false | [public.users](public.users.md) [api.recipes](api.recipes.md) |  |  |
 | data | bytea |  | false |  |  |  |
 
 ## Constraints

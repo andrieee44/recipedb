@@ -6,5 +6,8 @@ CREATE TABLE users (
 	password_hash        TEXT          NOT NULL,
 	is_admin             BOOLEAN       NOT NULL DEFAULT FALSE,
 	middle_name          VARCHAR(255),
-	profile_picture_hash TEXT
+	profile_picture_hash TEXT,
+
+	FOREIGN KEY (profile_picture_hash)
+		REFERENCES images(hash)
 );

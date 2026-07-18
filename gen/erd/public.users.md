@@ -11,7 +11,7 @@
 | password_hash | text |  | false |  |  |  |
 | middle_name | varchar(255) |  | true |  |  |  |
 | is_admin | boolean | false | false |  |  |  |
-| profile_picture_hash | text |  | true |  |  |  |
+| profile_picture_hash | text |  | true |  | [public.images](public.images.md) |  |
 
 ## Constraints
 
@@ -19,6 +19,7 @@
 | ---- | ---- | ---------- |
 | users_pkey | PRIMARY KEY | PRIMARY KEY (user_id) |
 | users_email_key | UNIQUE | UNIQUE (email) |
+| users_profile_picture_hash_fkey | FOREIGN KEY | FOREIGN KEY (profile_picture_hash) REFERENCES images(hash) |
 
 ## Indexes
 

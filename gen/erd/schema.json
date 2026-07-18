@@ -86,6 +86,19 @@
           "columns": [
             "email"
           ]
+        },
+        {
+          "name": "users_profile_picture_hash_fkey",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (profile_picture_hash) REFERENCES images(hash)",
+          "table": "public.users",
+          "referenced_table": "public.images",
+          "columns": [
+            "profile_picture_hash"
+          ],
+          "referenced_columns": [
+            "hash"
+          ]
         }
       ]
     },
@@ -244,6 +257,19 @@
           ],
           "referenced_columns": [
             "user_id"
+          ]
+        },
+        {
+          "name": "recipes_thumbnail_image_hash_fkey",
+          "type": "FOREIGN KEY",
+          "def": "FOREIGN KEY (thumbnail_image_hash) REFERENCES images(hash)",
+          "table": "api.recipes",
+          "referenced_table": "public.images",
+          "columns": [
+            "thumbnail_image_hash"
+          ],
+          "referenced_columns": [
+            "hash"
           ]
         },
         {
@@ -1112,6 +1138,19 @@
   ],
   "relations": [
     {
+      "table": "public.users",
+      "columns": [
+        "profile_picture_hash"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "public.images",
+      "parent_columns": [
+        "hash"
+      ],
+      "parent_cardinality": "zero_or_one",
+      "def": "FOREIGN KEY (profile_picture_hash) REFERENCES images(hash)"
+    },
+    {
       "table": "api.recipes",
       "columns": [
         "user_id"
@@ -1123,6 +1162,19 @@
       ],
       "parent_cardinality": "exactly_one",
       "def": "FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE"
+    },
+    {
+      "table": "api.recipes",
+      "columns": [
+        "thumbnail_image_hash"
+      ],
+      "cardinality": "zero_or_more",
+      "parent_table": "public.images",
+      "parent_columns": [
+        "hash"
+      ],
+      "parent_cardinality": "zero_or_one",
+      "def": "FOREIGN KEY (thumbnail_image_hash) REFERENCES images(hash)"
     },
     {
       "table": "api.favorite_recipes",
