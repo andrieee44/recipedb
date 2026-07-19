@@ -6,7 +6,7 @@ AS $$
 
 		INSERT INTO api.notifications (user_id, type, recipe_id)
 		SELECT user_id, 'following_recipe_new', NEW.recipe_id
-		FROM users_follows
+		FROM api.users_follows
 		WHERE followed_user_id = NEW.user_id;
 
 		RETURN NEW;
