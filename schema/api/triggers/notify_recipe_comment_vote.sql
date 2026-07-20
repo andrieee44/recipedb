@@ -1,8 +1,8 @@
 CREATE FUNCTION api.notify_recipe_comment_vote() RETURNS TRIGGER
 AS $$
 	BEGIN
-		INSERT INTO api.notifications (user_id, type, actor_user_id)
-		SELECT user_id, 'recipe_comment_voted', NEW.user_id
+		INSERT INTO api.notifications (user_id, type, actor_user_id, comment_id)
+		SELECT user_id, 'recipe_comment_voted', NEW.user_id, NEW.comment_id
 		FROM api.recipes_comments
 		WHERE comment_id = NEW.comment_id
 			AND user_id != NEW.user_id
