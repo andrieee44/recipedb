@@ -64,7 +64,6 @@
 | api.change_password | void | new_password text | FUNCTION |
 | api.get_image | application/octet-stream | image_hash text | FUNCTION |
 | api.login | json | email text, password text | FUNCTION |
-| api.notify_insert_recipe | trigger |  | FUNCTION |
 | api.notify_insert_recipe_comment | trigger |  | FUNCTION |
 | api.notify_insert_user_follow | trigger |  | FUNCTION |
 | api.notify_recipe_comment_vote | trigger |  | FUNCTION |
@@ -74,6 +73,7 @@
 | api.upload_image | text | image_data bytea | FUNCTION |
 | api.user_info | record | target_id uuid | FUNCTION |
 | api.user_private_info | record |  | FUNCTION |
+| api.notify_insert_recipe | trigger |  | FUNCTION |
 
 ## Enums
 

@@ -1680,12 +1680,6 @@
       "type": "FUNCTION"
     },
     {
-      "name": "api.notify_insert_recipe",
-      "return_type": "trigger",
-      "arguments": "",
-      "type": "FUNCTION"
-    },
-    {
       "name": "api.notify_insert_recipe_comment",
       "return_type": "trigger",
       "arguments": "",
@@ -1736,6 +1730,12 @@
     {
       "name": "api.user_private_info",
       "return_type": "record",
+      "arguments": "",
+      "type": "FUNCTION"
+    },
+    {
+      "name": "api.notify_insert_recipe",
+      "return_type": "trigger",
       "arguments": "",
       "type": "FUNCTION"
     }

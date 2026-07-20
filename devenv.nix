@@ -66,7 +66,7 @@
       EOF
 
       tbls lint
-      tbls doc -f
+      tbls doc --rm-dist
     '';
   };
 }
